@@ -1,0 +1,44 @@
+. Implement jdbc connectivity to insert Records.
+ package Unit3;
+import java.sql.*;
+import java.util.Scanner;
+
+public class p1{
+	public static void main(String[] ar) {
+		
+		try{
+			Class.forName("com.mysql.jdbc.Driver");  
+  			Connection con=DriverManager.getConnection(  
+			"jdbc:mysql://localhost:3306/alpha","root","");  
+			PreparedStatement pstmt;
+			int Roll_No,Fees;
+			String Full_Name,Course;
+			
+			Scanner sc = new Scanner(System.in);
+			
+			System.out.println("Enter Roll_No");
+			Roll_No=sc.nextInt();
+			
+			System.out.println("Enter Full_Name");
+			Full_Name=sc.next();
+			
+			System.out.println("Enter Course");
+			Course= sc.next();
+			
+			System.out.println("Enter Fees");
+			Fees=sc.nextInt();
+			
+			pstmt=con.prepareStatement("insert into student (Roll_No,Full_Name,Course,Fees) values(?,?,?,?)");			
+			pstmt.setInt(1,Roll_No);
+			pstmt.setString(2,Full_Name);
+			pstmt.setString(3,Course);
+			pstmt.setInt(4,Fees);
+			pstmt.executeUpdate();
+			System.out.println("Updated");
+			con.close();
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
+	}
+}

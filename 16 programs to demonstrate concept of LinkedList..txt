@@ -1,0 +1,24 @@
+3. Write java programs to demonstrate concept of LinkedList.
+package Unit2;
+
+import java.util.LinkedList;
+
+public class p3 {
+    public static void main(String[] args) {
+        // Creating a LinkedList
+        LinkedList<String> linkedList = new LinkedList<String>();
+
+        // Adding elements to the LinkedList
+        linkedList.add("Dog");
+        linkedList.add("Cat");
+        linkedList.add("Rabbit");
+
+        // Accessing elements
+        System.out.println("LinkedList Elements:");
+        for (String animal : linkedList) {
+            System.out.println(animal);
+        }
+    }
+}
+
+

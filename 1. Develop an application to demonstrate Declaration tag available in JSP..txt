@@ -1,0 +1,25 @@
+1. Develop an application to demonstrate Declaration tag available in JSP.
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Declaration</title>
+</head>
+<body>
+ <%!
+        // Declaration tag to declare variables and methods
+        int num1 = 1485;
+        int num2 = 2545;
+        
+        // Method declaration
+        int add(int a, int b) {
+            return a + b;
+        }
+    %>
+    <h1>Declaration Tag</h1>
+    <p>Sum of <%= num1 %> and <%= num2 %> is <%= add(num1, num2) %></p>
+</body>
+</html>
+

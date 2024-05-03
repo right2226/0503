@@ -1,0 +1,26 @@
+package Unit2;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+public class p4 {
+    public static void main(String[] args) {
+        // Creating an ArrayList
+        ArrayList<String> colors = new ArrayList<String>();
+
+        // Adding elements to the ArrayList
+        colors.add("Aqua");
+        colors.add("SkyBlue");
+        colors.add("Black");
+
+        // Getting an Iterator for the ArrayList
+        Iterator<String> iterator = colors.iterator();
+
+        // Iterating through the ArrayList using the Iterator
+        System.out.println("Elements in the ArrayList:");
+        while (iterator.hasNext()) {
+            String color = iterator.next();
+            System.out.println(color);
+        }
+    }
+} 
+

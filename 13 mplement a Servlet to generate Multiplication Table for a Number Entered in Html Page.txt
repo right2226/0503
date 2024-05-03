@@ -1,0 +1,70 @@
+. IS
+
+
+HTML File :- 
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Multiplication</title>
+</head>
+<body>
+<form method="get" action="p3">
+Enter Number <input type="text" name="txt1">
+<input type="submit">
+</form>
+</body>
+</html>
+
+Servlet File :-
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class p3
+ */
+@WebServlet("/p3")
+public class p3 extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public p3() {
+        super();
+    }
+
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // TODO Auto-generated method stub
+        PrintWriter pw = response.getWriter();
+        int n = Integer.parseInt(request.getParameter("txt1"));
+        int i;
+        pw.write("<table border=1");
+        for (i=1;i<=10;i++)
+        {
+            pw.write("<tr>");
+            pw.write("<td>"+ n*i + "</td>");
+            pw.write("</tr>");
+        }
+    }
+
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // TODO Auto-generated method stub
+    }
+
+}
+
+

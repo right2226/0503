@@ -1,0 +1,166 @@
+Register.jsp :-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<h2>Student Registration</h2>
+    <form action="RegisterServlet" method="post">
+        Roll No: <input type="text" name="rollNo"><br>
+        Name: <input type="text" name="name"><br>
+        Course: <input type="text" name="course"><br>
+        <input type="submit" value="Register">
+        </form>
+</body>
+</html>
+
+RegisterServlet :- 
+import java.io.IOException;
+import java.sql.*;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+ 
+/**
+* Servlet implementation class RegisterServlet
+*/
+@WebServlet("/RegisterServlet")
+public class RegisterServlet extends HttpServlet {
+private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public RegisterServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+ 
+/**
+ * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+ */
+protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+// TODO Auto-generated method stub
+}
+ 
+/**
+ * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+ */
+protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+// TODO Auto-generated method stub
+       String rollNo = request.getParameter("rollNo");
+        String name = request.getParameter("name");
+        String course = request.getParameter("course");
+ 
+        String url = "jdbc:mysql://localhost:3306/alpha";
+        String user = "root";
+        String password = "";
+ 
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection(url, user, password);
+            PreparedStatement pstmt = con.prepareStatement("INSERT INTO mytable (`Roll no`, Name, Course) VALUES (?, ?, ?)");
+            pstmt.setString(1, rollNo);
+            pstmt.setString(2, name);
+            pstmt.setString(3, course);
+            int rowsInserted = pstmt.executeUpdate();
+            pstmt.close();
+            con.close();
+ 
+            if (rowsInserted > 0) {
+                response.sendRedirect("login.jsp");
+            } else {
+                response.getWriter().println("Registration failed!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+}
+}
+
+Login.jsp :-
+ <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+    <h2>Student Login</h2>
+    <form action="LoginServlet" method="post">
+        Roll No: <input type="text" name="rollNo"><br>
+        <input type="submit" value="Login">
+    </form>
+</body>
+</html>
+
+LoginServlet :- import java.io.IOException;
+import java.sql.*;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+ 
+/**
+* Servlet implementation class LoginServlet
+*/
+@WebServlet("/LoginServlet")
+public class LoginServlet extends HttpServlet {
+private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public LoginServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+ 
+/**
+ * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+ */
+protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+// TODO Auto-generated method stub
+}
+ 
+/**
+ * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+ */
+protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+// TODO Auto-generated method stub
+ String rollNo = request.getParameter("rollNo");
+ 
+        String url = "jdbc:mysql://localhost:3306/alpha";
+        String user = "root";
+        String password = "";
+ 
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection(url, user, password);
+            PreparedStatement pstmt = con.prepareStatement("SELECT * FROM mytable WHERE `Roll No` = ?");
+            pstmt.setString(1, rollNo);
+            ResultSet rs = pstmt.executeQuery();
+ 
+            if (rs.next()) {
+                response.sendRedirect("Index.jsp"); // Redirect to index.jsp if login is successful
+            } else {
+                response.getWriter().println("Please Register First!");
+            }
+ 
+            rs.close();
+            pstmt.close();
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+}
+ 
+}

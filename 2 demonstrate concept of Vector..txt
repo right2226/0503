@@ -1,0 +1,21 @@
+package Unit2;
+
+import java.util.Vector;
+
+public class p2 {
+    public static void main(String[] args) {
+        // Creating a Vector
+        Vector<String> vector = new Vector<String>();
+
+        // Adding elements to the Vector
+        vector.add("Red");
+        vector.add("Green");
+        vector.add("Blue");
+
+        // Accessing elements
+        System.out.println("Vector Elements:");
+        for (String color : vector) {
+            System.out.println(color);
+        }
+    }
+}

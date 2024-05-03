@@ -1,0 +1,38 @@
+Implement jdbc connectivity to demonstrate PreparedStatement.
+import java.sql.*;
+
+public class p1 {
+    public static void main(String[] args) {
+        try {
+            // Registering the MySQL JDBC driver
+            Class.forName("com.mysql.jdbc.Driver");
+
+            // Establishing a connection to the database
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/alpha","root","");
+
+            // Creating a PreparedStatement
+            String sql = "INSERT INTO student (Roll_No,Full_Name,Course,Fees) VALUES (?, ?, ?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            // Setting parameters for PreparedStatement
+            preparedStatement.setInt(1, 1);
+            preparedStatement.setString(2, "Jayesh_Bonde");
+            preparedStatement.setString(3, "BCA");
+            preparedStatement.setInt(4, 80000);
+
+            // Executing the PreparedStatement
+            int rowsInserted = preparedStatement.executeUpdate();
+            if (rowsInserted > 0) {
+                System.out.println("A new record has been inserted successfully.");
+            }
+
+            // Closing resources
+            preparedStatement.close();
+            connection.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}

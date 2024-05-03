@@ -1,0 +1,81 @@
+Class SharedResource {
+    private volatile boolean flag = false;
+
+    // Method to print odd numbers
+    public synchronized void printOdd(int number) {
+        while (flag) {
+            try {
+                wait(); // Wait until notified
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        System.out.println(Thread.currentThread().getName() + “: “ + number);
+        flag = true;
+        notify(); // Notify other waiting threads
+    }
+
+    // Method to print even numbers
+    public synchronized void printEven(int number) {
+        while (!flag) {
+            try {
+                wait(); // Wait until notified
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        System.out.println(Thread.currentThread().getName() + “: “ + number);
+        flag = false;
+        notify(); // Notify other waiting threads
+    }
+}
+
+class EvenThread implements Runnable {
+    private SharedResource resource;
+    private int max;
+
+    public EvenThread(SharedResource resource, int max) {
+        this.resource = resource;
+        this.max = max;
+    }
+
+    @Override
+    public void run() {
+        for (int i = 2; i <= max; i += 2) {
+            resource.printEven(i);
+        }
+    }
+}
+
+class OddThread implements Runnable {
+    private SharedResource resource;
+    private int max;
+
+    public OddThread(SharedResource resource, int max) {
+        this.resource = resource;
+        this.max = max;
+    }
+
+    @Override
+    public void run() {
+        for (int i = 1; i <= max; i += 2) {
+            resource.printOdd(i);
+        }
+    }
+}
+
+public class p4 {
+    public static void main(String[] args) {
+        SharedResource resource = new SharedResource();
+        int maxCount = 10;
+
+        // Creating threads
+        Thread evenThread = new Thread(new EvenThread(resource, maxCount), “EvenThread”);
+        Thread oddThread = new Thread(new OddThread(resource, maxCount), “OddThread”);
+
+        // Starting threads
+        oddThread.start();
+        evenThread.start();
+    }
+}
+

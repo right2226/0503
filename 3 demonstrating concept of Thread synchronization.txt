@@ -1,0 +1,66 @@
+// A shared resource class
+class Counter {
+    private int count = 0;
+
+    // Synchronized method to increment the count
+    public synchronized void increment() {
+        count++;
+    }
+
+    // Synchronized method to get the count
+    public synchronized int getCount() {
+        return count;
+    }
+}
+
+// A class implementing the Runnable interface
+class MyRunnable1 implements Runnable {
+    private Counter counter;
+
+    // Constructor to initialize the counter
+    public MyRunnable1(Counter counter) {
+        this.counter = counter;
+    }
+
+    // Overriding run() method of Runnable interface
+    public void run() {
+        // Increment the counter 1000 times
+        for (int i = 0; i < 500; i++) {
+            counter.increment();
+        }
+    }
+}
+// Main class
+public class p3 {
+    public static void main(String[] args) {
+        System.out.println(“Main thread starting.”);
+
+        // Creating a shared Counter object
+        Counter counter = new Counter();
+
+        // Creating two instances of MyRunnable with the same Counter object
+        MyRunnable1 myRunnable1 = new MyRunnable1(counter);
+        MyRunnable1 myRunnable2 = new MyRunnable1(counter);
+
+        // Creating threads using MyRunnable instances
+        Thread thread1 = new Thread(myRunnable1);
+        Thread thread2 = new Thread(myRunnable2);
+
+        // Starting the threads
+        thread1.start();
+        thread2.start();
+
+        // Waiting for threads to finish
+        try {
+            thread1.join();
+            thread2.join();
+        } catch (InterruptedException e) {
+            System.out.println(“Main thread interrupted.”);
+        }
+
+        // Displaying the final count
+        System.out.println(“Final count: “ + counter.getCount());
+        System.out.println(“Main thread exiting.”);
+    }
+}
+

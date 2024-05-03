@@ -1,0 +1,89 @@
+4. Develop a JSP Application to accept. Details from user and store it into the database table.
+Jsp File:-
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<form action="ServletEx4" method="post">
+Roll No <input type="text" name="txtrno"> <br>
+Name <input type="text" name="txtname"> <br>
+Course <input type="text" name="txtcourse"> <br>
+<input type="submit" value="Register">
+</form>
+</body>
+</html>
+Servlet File :- import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.*;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+ 
+/**
+* Servlet implementation class ServletEx4
+*/
+@WebServlet("/ServletEx4")
+public class ServletEx4 extends HttpServlet {
+private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public ServletEx4() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+ 
+/**
+ * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+ */
+protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+// TODO Auto-generated method stub
+}
+ 
+/**
+ * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+ */
+protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+// TODO Auto-generated method stub
+
+PrintWriter pw = response.getWriter();
+int rno = Integer.parseInt(request.getParameter("txtrno"));
+String name=request.getParameter("txtname");
+String course=request.getParameter("txtcourse");
+try{
+Class.forName("com.mysql.jdbc.Driver");  
+  			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/alpha","root","");  
+PreparedStatement pstmt;
+pstmt=con.prepareStatement("insert into mytable (`Roll no`,Name,course) values(?,?,?)");			
+pstmt.setInt(1,rno);
+pstmt.setString(2,name);
+pstmt.setString(3,course);
+int cnt = pstmt.executeUpdate();
+con.close();
+if (cnt > 0 )
+{
+pw.write("Record Inserted Successfully");
+RequestDispatcher rd = request.getRequestDispatcher("JspEx4.jsp");
+rd.include(request, response);
+}
+else
+{
+pw.write("Error");
+RequestDispatcher rd = request.getRequestDispatcher("JspEx4.jsp");
+rd.include(request, response);
+}	
+}
+catch (Exception e){
+e.printStackTrace();
+}
+}
+}
